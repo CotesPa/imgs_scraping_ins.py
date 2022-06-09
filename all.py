@@ -11,9 +11,11 @@ import time
 import os 
 import wget
 
-#please download the chromedriver, and put the address in 'driver'
+###################################################################
+#please download the chromedriver, and put the address in 'driver'#
+###################################################################
 
-driver = webdriver.Chrome('')
+driver = webdriver.Chrome('I need address')
 driver.get("https://www.instagram.com/")
 
 username = WebDriverWait(driver, 10).until(
@@ -26,8 +28,9 @@ login=driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]')
 username.clear()
 password.clear()
 
-
-#please enter your account and password here
+##################################
+##please enter your account here##
+##################################
 
 username.send_keys('')
 password.send_keys('')
@@ -39,7 +42,9 @@ search = WebDriverWait(driver, 10).until(
 
 search.clear()
 
-#please pick a keyword for searching
+#######################################
+##please pick a keyword for searching##
+#######################################
 
 keyword=''
 
