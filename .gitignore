@@ -1,129 +1,63 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
 
-# C extensions
-*.so
+from re import S
+import selenium
+from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+import os 
+import wget
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-pip-wheel-metadata/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+driver = webdriver.Chrome('C:/Users/shitb/OneDrive/Desktop/chromehome/chromedriver.exe')
+driver.get("https://www.instagram.com/")
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+username = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.NAME, "username"))    )  
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+password = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.NAME, "password"))     )  
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
+login=driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]')
+username.clear()
+password.clear()
 
-# Translations
-*.mo
-*.pot
 
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
+#please enter your account and password here
 
-# Flask stuff:
-instance/
-.webassets-cache
+username.send_keys('')
+password.send_keys('')
 
-# Scrapy stuff:
-.scrapy
+login.click()
 
-# Sphinx documentation
-docs/_build/
+search = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, '//*[@id="react-root"]/section/nav/div[2]/div/div/div[2]/input'))     )  
 
-# PyBuilder
-target/
+search.clear()
 
-# Jupyter Notebook
-.ipynb_checkpoints
+#please pick a keyword for searching
 
-# IPython
-profile_default/
-ipython_config.py
+keyword=''
 
-# pyenv
-.python-version
+search.send_keys(keyword)
+time.sleep(1)
+search.send_keys(Keys.RETURN)
+time.sleep(1)
+search.send_keys(Keys.RETURN)
 
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
+WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.CLASS_NAME, 'FFVAD'))     )  
 
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
-__pypackages__/
+imgs=driver.find_elements_by_class_name('FFVAD')
+path=os.path.join(keyword)
+os.mkdir(path)
+count=0
+for img in imgs:
+        save_as=os.path.join(path,keyword+str(count)+'.jpg')
+        wget.download(img.get_attribute('src'),save_as)
+        count+=1
 
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
+ 
+driver.quit()
